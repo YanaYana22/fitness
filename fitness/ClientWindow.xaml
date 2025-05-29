@@ -1,0 +1,172 @@
+﻿<Window x:Class="fitness.ClientWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:fitness"
+        mc:Ignorable="d"
+        Title="Фитнес-клуб: Личный кабинет" 
+        Height="600" Width="800"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid Background="#FFF5E1">
+        <DockPanel LastChildFill="True">
+            <!-- Верхняя панель с кнопкой выхода -->
+            <Border DockPanel.Dock="Top" Background="#FF5D4037" Height="40">
+                <Button x:Name="btnLogout" Content="Выход" 
+                    HorizontalAlignment="Right" VerticalAlignment="Center"
+                    Margin="10,0" Padding="10,3" Background="#FFB71C1C" 
+                    Foreground="White" FontWeight="Bold" FontSize="12"
+                    Click="BtnLogout_Click"
+                    BorderThickness="0" Cursor="Hand">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" 
+                                            CornerRadius="3">
+                                            <ContentPresenter HorizontalAlignment="Center" 
+                                                          VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#FFD32F2F"/>
+                                    <Setter Property="Effect">
+                                        <Setter.Value>
+                                            <DropShadowEffect Color="DarkRed" BlurRadius="5"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#FF9A0007"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Border>
+        <TabControl Background="White" BorderBrush="#FF4FC3F7" Margin="10">
+            <!-- Вкладка профиля -->
+            <TabItem Header="Мой профиль" Background="#FF81D4FA">
+                <Grid Margin="15">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Личная информация" 
+                               Grid.Row="0" FontSize="16" FontWeight="Bold" 
+                               Margin="0,0,0,15" Foreground="#FF01579B"/>
+
+                    <!-- ФИО -->
+                    <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,0,0,10">
+                        <TextBlock Text="ФИО:" Width="120" FontWeight="Bold"/>
+                        <TextBlock x:Name="txtFullName" Text="-" FontSize="14"/>
+                    </StackPanel>
+
+                    <!-- Абонемент -->
+                    <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="0,0,0,10">
+                        <TextBlock Text="Абонемент:" Width="120" FontWeight="Bold"/>
+                        <TextBlock x:Name="txtMembership" Text="-" FontSize="14"/>
+                    </StackPanel>
+
+                    <!-- Контакты -->
+                    <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="0,0,0,10">
+                        <TextBlock Text="Телефон:" Width="120" FontWeight="Bold"/>
+                        <TextBlock x:Name="txtPhone" Text="-" FontSize="14"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="4" Margin="0,0,0,20">
+                        <TextBlock Text="Email:" Width="120" FontWeight="Bold"/>
+                        <TextBlock x:Name="txtEmail" Text="-" FontSize="14"/>
+                    </StackPanel>
+
+                    <Button x:Name="btnEditContacts" Content="Изменить контакты" 
+                            Grid.Row="6" Width="150" Height="30" Background="#FF4FC3F7" 
+                            Foreground="White" FontWeight="Bold" Click="BtnEditContacts_Click"/>
+                </Grid>
+            </TabItem>
+
+            <!-- Вкладка доступных тренировок -->
+            <TabItem Header="Доступные тренировки" Background="#FF81D4FA">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Выберите тренировку и нажмите 'Записаться'" 
+                               Grid.Row="0" Margin="0,0,0,10" FontWeight="Bold"/>
+
+                    <DataGrid x:Name="dgAvailableWorkouts" Grid.Row="1" 
+                              AutoGenerateColumns="False" IsReadOnly="True"
+                              SelectionMode="Single" RowBackground="#FFF5FDFF"
+                              AlternatingRowBackground="#FFE1F5FE">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Тип тренировки" Binding="{Binding workout_name}" Width="*"/>
+                            <DataGridTextColumn Header="Дата" Binding="{Binding start_time, StringFormat=dd.MM.yyyy}" Width="80"/>
+                            <DataGridTextColumn Header="Время" Binding="{Binding start_time, StringFormat=HH:mm}" Width="70"/>
+                            <DataGridTextColumn Header="Зал" Binding="{Binding gym_name}" Width="100"/>
+                            <DataGridTextColumn Header="Тренер" Binding="{Binding trainer_name}" Width="150"/>
+                            <DataGridTextColumn Header="Свободно мест" 
+                                                Binding="{Binding free_slots}" Width="80"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Button x:Name="btnSignUp" Content="Записаться" 
+                            Grid.Row="2" Width="120" Height="30" Margin="0,10,0,0" 
+                            HorizontalAlignment="Right" Background="#FF4FC3F7" 
+                            Foreground="White" FontWeight="Bold" Click="BtnSignUp_Click"/>
+                </Grid>
+            </TabItem>
+
+            <!-- Вкладка моих записей -->
+            <TabItem Header="Мои записи" Background="#FF81D4FA">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Ваши будущие тренировки" 
+                               Grid.Row="0" Margin="0,0,0,10" FontWeight="Bold"/>
+
+                    <DataGrid x:Name="dgMyWorkouts" Grid.Row="1" 
+                              AutoGenerateColumns="False" IsReadOnly="True"
+                              SelectionMode="Single" RowBackground="#FFF5FDFF"
+                              AlternatingRowBackground="#FFE1F5FE">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Тип тренировки" Binding="{Binding workout_name}" Width="*"/>
+                            <DataGridTextColumn Header="Дата" Binding="{Binding start_time, StringFormat=dd.MM.yyyy}" Width="80"/>
+                            <DataGridTextColumn Header="Время" Binding="{Binding start_time, StringFormat=HH:mm}" Width="70"/>
+                            <DataGridTextColumn Header="Зал" Binding="{Binding gym_name}" Width="100"/>
+                            <DataGridTextColumn Header="Тренер" Binding="{Binding trainer_name}" Width="150"/>
+                            <DataGridTemplateColumn Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="Отменить" Background="#FFE57373" 
+                                                Foreground="White" Click="BtnCancel_Click"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <TextBlock x:Name="lblStatus" Grid.Row="2" Foreground="Red" Margin="0,10,0,0"/>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </DockPanel>
+    </Grid>
+</Window>
